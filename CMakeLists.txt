@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 
 ### Extract UCL version
 # Read version file
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/include/UCL/version.hpp" VERSION_FILE_CONTENT)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/include/ucl/version.hpp" VERSION_FILE_CONTENT)
 
 # Extract version
 string(REGEX MATCH "UCL_VERSION_MAJOR = ([0-9]+)" _ ${VERSION_FILE_CONTENT})
@@ -16,10 +16,11 @@ set(UCL_VERSION_PATCH ${CMAKE_MATCH_1})
 
 # Concatenation
 set(UCL_VERSION "${UCL_VERSION_MAJOR}.${UCL_VERSION_MINOR}.${UCL_VERSION_PATCH}")
-message(STATUS "UCL version: ${UCL_VERSION}")
+message(STATUS "UCL version: v${UCL_VERSION}")
 
 
 
+### Define project
 project(
     ucl
     VERSION ${UCL_VERSION}
@@ -30,12 +31,22 @@ project(
 
 
 ### Link type
-if(NOT DEFINED UCL_LINK_TYPE)
-    set(UCL_LINK_TYPE SHARED)
-elseif(UCL_LINK_TYPE NOT MATCHES "SHARED|STATIC")
-    message(FATAL_ERROR "invalid UCL_LINK_TYPE! Available: SHARED or STATIC")
-endif
-message(STATUS "Using ${UCL_LINK_TYPE} UCL")
+if(UCL_LINK_TYPE STREQUAL "SHARED")
+    set(BUILD_SHARED_LIBS ON)
+elseif(UCL_LINK_TYPE STREQUAL "STATIC")
+    set(BUILD_SHARED_LIBS OFF)
+endif()
+
+
+
+### C++ flags
+# MSVC not supported yet
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR CMAKE_GENERATOR MATCHES "Visual Studio")
+    message(FATAL_ERROR "For MSVC or Visual Studio use pregenerated .vcxproj")
+endif()
+
+# Standard
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 
@@ -49,7 +60,6 @@ file(GLOB_RECURSE SOURCES "${SOURCES_DIR}/*.cpp")
 
 add_library(
     ucl
-    ${UCL_LINK_TYPE}
     ${SOURCES}
     ${PUBLIC_HEADERS} ${PRIVATE_HEADERS}
 )
@@ -61,20 +71,19 @@ target_include_directories(
 target_compile_definitions(
     ucl
     PUBLIC
-        $<$<STREQUAL:${UCL_LINK_TYPE},SHARED>:UCL_SHARED>
-        $<$<STREQUAL:${UCL_LINK_TYPE},STATIC>:UCL_STATIC>
+        $<$<BOOL:${BUILD_SHARED_LIBS}>:UCL_SHARED>
+        $<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:UCL_STATIC>
     PRIVATE
-        $<$<CONFIG:Debug>:DEBUG> $<$<CONFIG:Release>:NDEBUG>
-        $<$<STREQUAL:${UCL_LINK_TYPE},SHARED>:UCL_EXPORTS>
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<NOT:$<CONFIG:Debug>>:NDEBUG>
 )
 target_compile_options(
     ucl
     PUBLIC
     PRIVATE
-        $<$<CONFIG:Debug>:-g3 -Og> $<$<CONFIG:Release>:-g0 -O3>
-        -Wall -Wextra -Wpedantic $<$<CONFIG:Release>:-Werror -Wno-error=deprecated-declarations>
-        -std=c++11 -pipe
-        $<$<STREQUAL:${UCL_LINK_TYPE},SHARED>:-fvisibility=hidden>
+        -Wall -Wextra -Wpedantic $<$<NOT:$<CONFIG:Debug>>:-Werror -Wno-error=deprecated-declarations>
+        -pipe
+        $<$<BOOL:${BUILD_SHARED_LIBS}>:-fvisibility=hidden>
 )
 target_link_options(ucl PUBLIC PRIVATE)
 target_link_directories(ucl PUBLIC PRIVATE)
@@ -82,7 +91,8 @@ target_link_libraries(ucl PUBLIC PRIVATE)
 set_target_properties(ucl
     PROPERTIES
         PUBLIC_HEADER "${PUBLIC_HEADERS}"
-        DEFINE_SYMBOL ""
+        DEFINE_SYMBOL "UCL_EXPORTS"
         VERSION       "${UCL_VERSION}"
         SOVERSION     "${UCL_VERSION_MAJOR}"
+        POSITION_INDEPENDENT_CODE ON
 )

@@ -1,0 +1,11 @@
+{
+    "ucl.link_type": "SHARED",
+
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.configureOnEdit": false,
+    "cmake.configureOnOpen": false,
+    "cmake.configureSettings": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "UCL_LINK_TYPE": "${config:ucl.link_type}"
+    }
+}
