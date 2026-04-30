@@ -41,7 +41,6 @@
     #endif
 
     #define UCL_HIDDEN
-    //#define UCL_DEPRECATED(msg) __declspec(deprecated(msg))
 #else
     // Linux,
     // MacOS (OS X),
@@ -64,16 +63,15 @@
             #define UCL_HIDDEN
         #endif
     #endif
-
-    //#define UCL_DEPRECATED(msg) __attribute__((deprecated(msg)))
 #endif
 /** @endcond */
 
 
 
 /**
- * @brief
- *
+ * @brief Marks symbol as deprecated
+ * @version 1.0.0
+ * @authors Eugene Azimut
  */
 #define UCL_DEPRECATED(msg) [[deprecated(msg)]]
 

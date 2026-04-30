@@ -95,3 +95,55 @@ set_target_properties(ucl
         SOVERSION     "${UCL_VERSION_MAJOR}"
         POSITION_INDEPENDENT_CODE ON
 )
+
+
+
+### Docs
+option(UCL_BUILD_DOCS "Build UCL documentation" ON)
+if(UCL_BUILD_DOCS)
+    find_package(Doxygen 1.9.0 REQUIRED)
+    add_custom_target(
+        ucl_docs ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "UCL: generating documentation"
+        VERBATIM
+    )
+endif()
+
+
+
+### Tests
+option(UCL_RUN_TESTS "Build and run UCL tests" OFF)
+if(UCL_RUN_TESTS)
+    # Build tests
+    add_executable(
+        ucl_tests
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/main.cpp
+        ${PUBLIC_HEADERS}
+    )
+    target_compile_definitions(
+        ucl_tests
+        PRIVATE
+            $<$<CONFIG:Debug>:DEBUG>
+            $<$<NOT:$<CONFIG:Debug>>:NDEBUG>
+    )
+    target_compile_options(
+        ucl_tests
+        PRIVATE
+            -Wall -Wextra -Wpedantic $<$<NOT:$<CONFIG:Debug>>:-Werror -Wno-error=deprecated-declarations>
+            -pipe
+    )
+    target_link_options(ucl_tests PUBLIC PRIVATE)
+    target_link_directories(ucl_tests PUBLIC PRIVATE)
+    target_link_libraries(ucl_tests PUBLIC ucl)
+
+    # Run tests
+    add_custom_target(
+        ucl_tests_run ALL
+        COMMAND ${CMAKE_BINARY_DIR}/ucl_tests --all
+        DEPENDS ucl_tests
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        VERBATIM
+    )
+endif()

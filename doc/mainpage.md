@@ -1,4 +1,4 @@
-# *UCL - Universal Config Loader*
+# UCL - Universal Config Loader
 Crossplatform C++ library for loading config and policy files
 
 ## Table of contents
@@ -12,10 +12,14 @@ Crossplatform C++ library for loading config and policy files
     <li><a href="#contacts-and-support">Contacts and support</a></li>
 </ol>
 
+---
+
 ## License and copyright
 **UCL** is being distributed under the **MIT License**.<br>
 Copyright © Eugene Azimut, 2026<br>
 This software may be freely used, modified, and distributed, provided that this notice is retained. Please respect copyright laws.
+
+---
 
 ## Contacts and support
 If you have any questions or suggestions, contact the developers:
