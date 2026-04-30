@@ -20,7 +20,7 @@
 #endif
 
 #if __cplusplus < 201703L
-    #error "Required C++ standard is C++11 and higher"
+    #error "Required C++ standard is C++17 and higher"
 #endif
 
 /** @cond IGNORE */
@@ -41,7 +41,7 @@
     #endif
 
     #define UCL_HIDDEN
-    #define UCL_DEPRECATED(msg) __declspec(deprecated(msg))
+    //#define UCL_DEPRECATED(msg) __declspec(deprecated(msg))
 #else
     // Linux,
     // MacOS (OS X),
@@ -65,9 +65,17 @@
         #endif
     #endif
 
-    #define UCL_DEPRECATED(msg) __attribute__((deprecated(msg)))
+    //#define UCL_DEPRECATED(msg) __attribute__((deprecated(msg)))
 #endif
 /** @endcond */
+
+
+
+/**
+ * @brief
+ *
+ */
+#define UCL_DEPRECATED(msg) [[deprecated(msg)]]
 
 
 

@@ -30,23 +30,22 @@ project(
 
 
 
-### Link type
+### C++ flags
+# MSVC not supported yet
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR CMAKE_GENERATOR MATCHES "Visual Studio")
+    message(FATAL_ERROR "MSVC compiler and MS Visual Studio generators are not supported yet")
+endif()
+
+# Standard
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Link type
 if(UCL_LINK_TYPE STREQUAL "SHARED")
     set(BUILD_SHARED_LIBS ON)
 elseif(UCL_LINK_TYPE STREQUAL "STATIC")
     set(BUILD_SHARED_LIBS OFF)
 endif()
-
-
-
-### C++ flags
-# MSVC not supported yet
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR CMAKE_GENERATOR MATCHES "Visual Studio")
-    message(FATAL_ERROR "For MSVC or Visual Studio use pregenerated .vcxproj")
-endif()
-
-# Standard
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 

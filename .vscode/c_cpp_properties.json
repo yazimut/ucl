@@ -1,6 +1,7 @@
 {
     "env": {
         "projectDefines": [
+            "UCL_SHARED",
             "UCL_EXPORTS",
             "UCL_${config:ucl.link_type}"
         ],
@@ -18,7 +19,6 @@
                 "DEBUG"
             ],
             "compilerPath": "/usr/bin/g++",
-            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64"
 
@@ -32,7 +32,6 @@
                 "NDEBUG"
             ],
             "compilerPath": "/usr/bin/g++",
-            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64"
 
@@ -46,7 +45,6 @@
                 "DEBUG"
             ],
             "compilerPath": "${env:MinGW}\\g++.exe",
-            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64"
 
@@ -60,7 +58,6 @@
                 "NDEBUG"
             ],
             "compilerPath": "${env:MinGW}\\g++.exe",
-            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64"
         }],
