@@ -2,7 +2,8 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "tasks": [{
+    "tasks": [
+        {
             "label": "Build",
             "type": "cmake",
             "command": "build",
@@ -17,13 +18,14 @@
                 "$gcc"
             ],
             "detail": "Build project"
-        }, {
+        },
+        {
             "label": "Build docs",
             "type": "shell",
             "command": "cmake",
             "args": [
                 "--build build",
-                "--target=docs"
+                "--target=ucl_docs"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -33,7 +35,8 @@
                 "$gcc"
             ],
             "detail": "Build documentation"
-        }, {
+        },
+        {
             "label": "Clean",
             "type": "cmake",
             "command": "clean",
@@ -45,13 +48,15 @@
                 "$gcc"
             ],
             "detail": "Remove targets"
-        }, {
+        },
+        {
             "label": "Remove docs",
             "type": "shell",
             "command": "cmake",
             "args": [
-                "--build", "build",
-                "--target=docs-clean"
+                "-E",
+                "remove_directory",
+                "doc/html"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -61,7 +66,8 @@
                 "$gcc"
             ],
             "detail": "Remove documentation"
-        }, {
+        },
+        {
             "label": "Hard clean",
             "type": "shell",
             "command": "cmake",
@@ -78,7 +84,8 @@
                 "$gcc"
             ],
             "detail": "Remove build directory"
-        }, {
+        },
+        {
             "label": "Echo (libargparse)",
             "type": "shell",
             "command": "echo",
@@ -94,5 +101,6 @@
             ],
             "detail": "Echo command",
             "hide": true
-    }]
+        }
+    ]
 }

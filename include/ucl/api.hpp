@@ -70,10 +70,15 @@
 
 /**
  * @brief Marks symbol as deprecated
+ * @details Symbol, marked as deprecated, may be used now,
+ * but it will be removed from API in next major release
+ *
+ * @param[in] Msg Deprecation reason
+ *
  * @version 1.0.0
  * @authors Eugene Azimut
  */
-#define UCL_DEPRECATED(msg) [[deprecated(msg)]]
+#define UCL_DEPRECATED(Msg) [[deprecated(Msg)]]
 
 
 

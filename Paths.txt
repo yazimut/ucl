@@ -1,0 +1,15 @@
+Paths
+
+System:
+    Linux:
+        /etc
+    Windows:
+        %ProgramData%
+
+User:
+    Linux:
+        ${HOME}/.config     для синхронизируемых данных
+        ${HOME}/.cache      для локальных данных
+    Windows:
+        %APPDATA%           для синхронизируемых данных
+        %LOCALAPPDATA%      для локальных данных

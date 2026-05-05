@@ -31,11 +31,6 @@ project(
 
 
 ### C++ flags
-# MSVC not supported yet
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR CMAKE_GENERATOR MATCHES "Visual Studio")
-    message(FATAL_ERROR "MSVC compiler and MS Visual Studio generators are not supported yet")
-endif()
-
 # Standard
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -46,6 +41,9 @@ if(UCL_LINK_TYPE STREQUAL "SHARED")
 elseif(UCL_LINK_TYPE STREQUAL "STATIC")
     set(BUILD_SHARED_LIBS OFF)
 endif()
+
+# Native CPU optimization
+option(UCL_NATIVE_CPU_OPTIMIZATION OFF)
 
 
 
@@ -83,6 +81,7 @@ target_compile_options(
         -Wall -Wextra -Wpedantic $<$<NOT:$<CONFIG:Debug>>:-Werror -Wno-error=deprecated-declarations>
         -pipe
         $<$<BOOL:${BUILD_SHARED_LIBS}>:-fvisibility=hidden>
+        $<$<BOOL:${UCL_NATIVE_CPU_OPTIMIZATION}>:-march=native -mtune=native>
 )
 target_link_options(ucl PUBLIC PRIVATE)
 target_link_directories(ucl PUBLIC PRIVATE)
@@ -132,7 +131,8 @@ if(UCL_RUN_TESTS)
         ucl_tests
         PRIVATE
             -Wall -Wextra -Wpedantic $<$<NOT:$<CONFIG:Debug>>:-Werror -Wno-error=deprecated-declarations>
-            -pipe
+            -pipe -s
+            -march=native -mtune=native
     )
     target_link_options(ucl_tests PUBLIC PRIVATE)
     target_link_directories(ucl_tests PUBLIC PRIVATE)

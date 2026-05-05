@@ -1,7 +1,6 @@
 {
     "env": {
         "projectDefines": [
-            "UCL_SHARED",
             "UCL_EXPORTS",
             "UCL_${config:ucl.link_type}"
         ],
