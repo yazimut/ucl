@@ -10,10 +10,32 @@
  */
 #include <ucl/IConfig.hpp>
 
+using namespace std;
 using namespace ucl;
 
 
 
-IConfig::IConfig() {}
+IConfig::IConfig(const string &CfgName):
+mCfgName("") {}
+
+IConfig::IConfig(const IConfig &Other):
+mCfgName(Other.mCfgName) {}
+
+IConfig::IConfig(IConfig &&Other):
+mCfgName(move(Other.mCfgName)) {}
 
 IConfig::~IConfig() noexcept {}
+
+IConfig &IConfig::operator = (const IConfig &Right) {
+    if (this == &Right) return *this;
+
+    mCfgName = Right.mCfgName;
+    return *this;
+}
+
+IConfig &IConfig::operator = (IConfig &&Right) {
+    if (this == &Right) return *this;
+
+    mCfgName = move(Right.mCfgName);
+    return *this;
+}
