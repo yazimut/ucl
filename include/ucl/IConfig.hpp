@@ -12,6 +12,7 @@
 #include "api.hpp"
 
 #include <string>
+#include <filesystem>
 
 
 
@@ -36,7 +37,7 @@ namespace ucl {
          * @version 1.0.0
          * @authors Eugene Azimut
          */
-        IConfig(const std::string &CfgName);
+        IConfig();
 
         /**
          * @brief Copy constructor
@@ -97,8 +98,22 @@ namespace ucl {
          */
         IConfig &operator = (IConfig &&Right) noexcept;
 
+    //* etc
+        virtual void load();
+
+    protected:
+        /**
+         * @brief Called after reading a key-value pair from a file
+         * @param[in] Key Setting name
+         * @param[in] Value Setting value
+         *
+         * @version 1.0.0
+         * @authors Eugene Azimut
+         */
+        virtual void onReadPair(const std::string &Key, const std::string &Value) = 0;
+
     private:
     //* Variables
-        std::string mCfgName;        ///< Config file name
+
     };
 }
