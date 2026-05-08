@@ -17,9 +17,9 @@ using namespace ucl;
 
 IConfig::IConfig() {}
 
-IConfig::IConfig(const IConfig &Other) {}
+IConfig::IConfig([[maybe_unused]] const IConfig &Other) {}
 
-IConfig::IConfig(IConfig &&Other) {}
+IConfig::IConfig([[maybe_unused]] IConfig &&Other) noexcept {}
 
 IConfig::~IConfig() noexcept {}
 
@@ -28,7 +28,9 @@ IConfig &IConfig::operator = (const IConfig &Right) {
     return *this;
 }
 
-IConfig &IConfig::operator = (IConfig &&Right) {
+IConfig &IConfig::operator = (IConfig &&Right) noexcept {
     if (this == &Right) return *this;
     return *this;
 }
+
+void IConfig::load() {}
