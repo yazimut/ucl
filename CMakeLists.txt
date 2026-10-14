@@ -26,6 +26,7 @@ project(
     VERSION ${UCL_VERSION}
     DESCRIPTION "Universal configuration loader for C++ programs"
     LANGUAGES CXX
+    HOMEPAGE_URL "https://github.com/yazimut/ucl"
 )
 
 
